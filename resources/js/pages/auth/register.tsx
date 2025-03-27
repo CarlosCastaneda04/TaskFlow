@@ -7,6 +7,7 @@ import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AuthLayout from '@/layouts/auth-layout';
 
 type RegisterForm = {
@@ -14,6 +15,7 @@ type RegisterForm = {
     email: string;
     password: string;
     password_confirmation: string;
+    rol: 'admin' | 'cliente' | 'trabajador';
 };
 
 export default function Register() {
@@ -22,6 +24,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        rol: 'cliente'
     });
 
     const submit: FormEventHandler = (e) => {
@@ -99,6 +102,25 @@ export default function Register() {
                             placeholder="Confirm password"
                         />
                         <InputError message={errors.password_confirmation} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="rol">Account Type</Label>
+                        <Select
+                            value={data.rol}
+                            onValueChange={(value) => setData('rol', value as typeof data.rol)}
+                            disabled={processing}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select account type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="cliente">Client</SelectItem>
+                                <SelectItem value="trabajador">Worker</SelectItem>
+                                <SelectItem value="admin" disabled>Administrator</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <InputError message={errors.rol} />
                     </div>
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
