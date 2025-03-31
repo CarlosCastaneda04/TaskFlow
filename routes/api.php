@@ -6,6 +6,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\EmpleadoController;
 
 // Ruta base de prueba
 Route::get('/ping', function () {
@@ -17,3 +18,12 @@ Route::apiResource('projects', ProjectController::class);
 Route::apiResource('tasks', TaskController::class);
 Route::apiResource('comments', CommentController::class);
 Route::apiResource('notifications', NotificationController::class);
+
+// Rutas especiales para el modo empleado
+Route::prefix('empleado')->group(function () {
+    Route::get('tareas/{userId}', [EmpleadoController::class, 'misTareas']);
+    Route::patch('tareas/{id}/estado', [EmpleadoController::class, 'actualizarEstado']);
+    Route::post('comentarios', [EmpleadoController::class, 'comentar']);
+    Route::get('notificaciones/{userId}', [EmpleadoController::class, 'misNotificaciones']);
+    Route::get('tareas-filtro/{userId}', [EmpleadoController::class, 'filtrarTareas']);
+});
