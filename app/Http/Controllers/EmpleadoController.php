@@ -11,11 +11,21 @@ class EmpleadoController extends Controller
 {
     // Ver solo las tareas asignadas al usuario
     public function misTareas($userId)
-    {
-        return Task::with('project')
+{
+    try {
+        $tareas = Task::with('project')
             ->where('assigned_to', $userId)
             ->get();
+
+        return response()->json($tareas);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Error al obtener tareas',
+            'mensaje' => $e->getMessage()
+        ], 500);
     }
+}
+
 
     // Actualizar el estado de una tarea
     public function actualizarEstado(Request $request, $id)

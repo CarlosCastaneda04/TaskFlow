@@ -14,11 +14,15 @@ class Notification extends Model
         'user_id',
         'message',
         'read_at',
+        'created_at',
+        'updated_at',
     ];
 
+    // Relación: cada notificación pertenece a un usuario
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 }
+
 
