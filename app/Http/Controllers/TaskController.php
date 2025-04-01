@@ -15,20 +15,21 @@ class TaskController extends Controller
 
     // Crear una nueva tarea
     public function store(Request $request)
-    {
-        $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'assigned_to' => 'nullable|exists:users,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'in:Pendiente,En Progreso,Completado',
-            'priority' => 'in:Alta,Media,Baja',
-            'deadline' => 'nullable|date',
-        ]);
+{
+    $request->validate([
+        'project_id' => 'required|exists:projects,id',
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'status' => 'in:Pendiente,En Progreso,Completado',
+        'priority' => 'in:Alta,Media,Baja',
+        'deadline' => 'required|date',
+    ]);
 
-        $task = Task::create($request->all());
-        return response()->json($task, 201);
-    }
+    Task::create($request->all());
+
+    return redirect('/dashboard')->with('success', 'Tarea creada con éxito.');
+}
+
 
     // Ver una tarea específica
     public function show(Task $task)
