@@ -26,5 +26,6 @@ Route::prefix('empleado')->group(function () {
     Route::post('comentarios', [EmpleadoController::class, 'comentar']);
     Route::get('notificaciones/{userId}', [EmpleadoController::class, 'misNotificaciones']);
     Route::post('notifications', [EmpleadoController::class, 'crearNotificacion']);
+    Route::patch('empleado/notificaciones/{id}/leer', [EmpleadoController::class, 'marcarComoLeida']);
     Route::get('tareas-filtro/{userId}', [EmpleadoController::class, 'filtrarTareas']);
 });

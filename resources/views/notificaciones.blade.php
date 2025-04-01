@@ -42,6 +42,7 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
     </style>
 </head>
 <body>
@@ -50,36 +51,59 @@
     <div id="notifications-container">Cargando notificaciones...</div>
 
     <script>
-        const userId = 1; // ID fijo temporal
+    const userId = 1; // Reemplazá por el ID real si tenés login dinámico
 
-        fetch(`/api/empleado/notificaciones/${userId}`)
-            .then(response => response.json())
-            .then(data => {
-                const container = document.getElementById('notifications-container');
-                container.innerHTML = '';
+    fetch(`/api/empleado/notificaciones/${userId}`)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('notifications-container');
+            container.innerHTML = '';
 
-                if (data.length === 0) {
-                    container.innerHTML = 'No tienes notificaciones aún.';
-                    return;
-                }
+            if (data.length === 0) {
+                container.innerHTML = 'No tienes notificaciones aún.';
+                return;
+            }
 
-                data.forEach(notif => {
-                    const div = document.createElement('div');
-                    div.classList.add('notification');
-                    if (!notif.ReadAt) div.classList.add('unread');
+            data.forEach(notif => {
+                const div = document.createElement('div');
+                div.classList.add('notification');
+                if (!notif.ReadAt) div.classList.add('unread');
 
-                    div.innerHTML = `
-                        <strong>${notif.Message}</strong>
-                        <div class="fecha">🕓 ${new Date(notif.CreatedAt).toLocaleString()}</div>
-                    `;
+                div.innerHTML = `
+                    <strong>${notif.Message}</strong>
+                    <div class="fecha">🕓 ${new Date(notif.CreatedAt).toLocaleString()}</div>
+                    ${
+                        !notif.ReadAt
+                            ? `<button onclick="marcarLeida(${notif.id}, this)">✅ Marcar como leída</button>`
+                            : `<div style="color: #00dfc4; font-size: 0.9em;">✔️ Ya leída</div>`
+                    }
+                `;
 
-                    container.appendChild(div);
-                });
-            })
-            .catch(err => {
-                document.getElementById('notifications-container').innerText = "Error al cargar notificaciones.";
-                console.error(err);
+                container.appendChild(div);
             });
-    </script>
+        })
+        .catch(err => {
+            document.getElementById('notifications-container').innerText = "Error al cargar notificaciones.";
+            console.error(err);
+        });
+
+    function marcarLeida(notificacionId, button) {
+        fetch(`/api/empleado/notificaciones/${notificacionId}/leida`, {
+            method: 'PATCH'
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log("✅ Notificación marcada como leída");
+            // Actualizamos el botón y estilo
+            button.parentElement.classList.remove('unread');
+            button.outerHTML = `<div style="color: #00dfc4; font-size: 0.9em;">✔️ Ya leída</div>`;
+        })
+        .catch(err => {
+            alert("❌ Error al marcar como leída");
+            console.error(err);
+        });
+    }
+</script>
+
 </body>
 </html>

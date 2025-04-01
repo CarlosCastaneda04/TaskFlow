@@ -128,4 +128,14 @@ public function comentar(Request $request)
     ]);
 }
 
+public function marcarComoLeida($id)
+{
+    $notificacion = \App\Models\Notification::findOrFail($id);
+    $notificacion->ReadAt = now();
+    $notificacion->save();
+
+    return response()->json(['message' => 'Notificación marcada como leída']);
+}
+
+
 }

@@ -97,11 +97,21 @@
         <div class="card-title">Comentarios</div>
         <a href="{{ route('empleado.comentarios') }}">Ver Comentarios</a>
         </div>
-    <div class="card">
-        <div class="card-icon">🔔</div>
-        <div class="card-title">Notificaciones</div>
-        <a href="{{ route('empleado.notificaciones') }}">Ver Notificaciones</a>
+        @php
+    $tieneSinLeer = \App\Models\Notification::where('UserId', 1)->whereNull('ReadAt')->exists();
+@endphp
+
+<div class="card">
+    <div class="card-icon">
+        🔔
+        @if ($tieneSinLeer)
+            <span style="color: #ff0055; font-size: 1.2em;">●</span>
+        @endif
     </div>
+    <div class="card-title">Notificaciones</div>
+    <a href="{{ route('empleado.notificaciones') }}">Ver Notificaciones</a>
+</div>
+
 </div>
 </body>
 </html>
