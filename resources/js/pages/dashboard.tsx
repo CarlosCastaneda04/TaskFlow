@@ -65,13 +65,22 @@ export default function Dashboard() {
                                     </Button>
                                 </Link>
 
+                                <Link href="/graficas">
+                                    <Button variant="outline">
+                                        Ver Gráficas
+                                    </Button>
+                                </Link>
 
+                                <Link href="/reportes">
+                                    <Button variant="outline">
+                                        Ver Reportes
+                                    </Button>
+                                </Link>
                             </>
-
-
                         )}
-
                     </div>
+
+
                 </div>
 
                 <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">

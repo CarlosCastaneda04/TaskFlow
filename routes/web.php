@@ -12,6 +12,8 @@ use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use App\Models\Task;
 
+use App\Http\Controllers\ReporteProyectoController;
+
 
 
 
@@ -132,6 +134,31 @@ Route::get('/tareas/{task}/editar', function (Task $task) {
 })->middleware('auth');
 
 Route::put('/tareas/{task}', [\App\Http\Controllers\TaskController::class, 'update'])->middleware('auth');
+
+
+Route::get('/graficas', function () {
+    $projects = \App\Models\Project::with('tasks')->where('user_id', Auth::id())->get();
+    return Inertia::render('Graficas', ['projects' => $projects]);
+})->middleware('auth');
+
+
+
+Route::get('/reportes', [ReporteProyectoController::class, 'index'])
+    ->middleware('auth')
+    ->name('reportes.index');
+
+    Route::get('/reportes/pdf', [ReporteProyectoController::class, 'exportPdf'])
+    ->middleware('auth')
+    ->name('reportes.pdf');
+
+Route::get('/reportes/excel', [ReporteProyectoController::class, 'exportExcel'])
+    ->middleware('auth')
+    ->name('reportes.excel');
+
+    Route::get('/reportes', [ReporteProyectoController::class, 'index'])->middleware('auth')->name('reportes.index');
+    Route::get('/reportes/pdf', [ReporteProyectoController::class, 'exportPdf'])->middleware('auth')->name('reportes.pdf');
+    Route::get('/reportes/excel', [ReporteProyectoController::class, 'exportExcel'])->middleware('auth')->name('reportes.excel');
+
 
 
 /*Route::middleware(['auth', 'verified'])->group(function () */

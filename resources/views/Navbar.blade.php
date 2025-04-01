@@ -11,24 +11,11 @@
                  <li class="nav-item">
                      <a class="nav-link active" href="/">Inicio</a>
                  </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="/api/projects" target="_blank">Proyectos</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="/api/tasks" target="_blank">Tareas</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="/api/comments" target="_blank">Comentarios</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="/api/notifications" target="_blank">Notificaciones</a>
+
                  </li>
              </ul>
-             <a style="margin: auto" href="/api/ping" class="btn btn-outline-info" target="_blank">Login</a>
-             <a style="margin: auto" href="/api/ping" class="btn btn-outline-info" target="_blank">signup</a>
-             <a style="margin: auto" href="/api/ping" class="btn btn-outline-info" target="_blank">📡 Verificar
-                 conexión</a>
+             <a style="margin: auto" href="/api/ping" class="btn btn-outline-info" target="_blank">Login / Register</a>
+
          </div>
      </div>
  </nav>
- 

@@ -59,56 +59,27 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="/">Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/api/projects" target="_blank">Proyectos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/api/tasks" target="_blank">Tareas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/api/comments" target="_blank">Comentarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/api/notifications" target="_blank">Notificaciones</a>
-                    </li>
+
                 </ul>
                 <a href="{{ route('login') }}" class="btn btn-outline-info">
                     Login
                 </a>
-                <a style="margin: auto" href="/api/ping" class="btn btn-outline-info" target="_blank">signup</a>
-                <a style="margin: auto" href="/api/ping" class="btn btn-outline-info" target="_blank">📡 Verificar
-                    conexión</a>
+                <a href="{{ route('register') }}" class="btn btn-outline-info">Signup</a>
+
             </div>
         </div>
     </nav>
 
     <!-- Contenido -->
     <div class="container">
-        <h1 class="mb-4" style="color: #00dfc4">Bienvenido a TaskFlow API</h1>
-        <p class="lead">Selecciona un recurso para ver los endpoints disponibles:</p>
+        <h1 class="mb-4" style="color: #00dfc4">Bienvenido a TaskFlow </h1>
+        <p class="lead">Inicia sesion para acceder a las funcionalidades</p>
 
         <div class="d-grid gap-3 col-md-6 mx-auto">
-            <a href="/api/projects" class="btn btn-dark btn-lg" target="_blank"
-                style="border: 1px solid #61dafb; color: #61dafb">
-                📁 Proyectos
-            </a>
-            <a href="/api/tasks" class="btn btn-dark btn-lg" target="_blank"
-                style="border: 1px solid #61dafb; color: #61dafb">
-                📝 Tareas
-            </a>
-            <a href="/api/comments" class="btn btn-dark btn-lg" target="_blank"
-                style="border: 1px solid #61dafb; color: #61dafb">
-                💬 Comentarios
-            </a>
-            <a href="/api/notifications" class="btn btn-dark btn-lg" target="_blank"
-                style="border: 1px solid #61dafb; color: #61dafb">
-                🔔 Notificaciones
-            </a>
+
         </div>
 
-        <div class="note mt-5">
-            Usa Postman para realizar peticiones POST, PUT o DELETE a estos endpoints.
-        </div>
+
     </div>
 
     <!-- Bootstrap JS -->
