@@ -1,4 +1,3 @@
-// ... tus imports
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/app-layout';
@@ -92,31 +91,58 @@ export default function VerProjectsAndTask() {
                     onSuccess: () => {
                         Swal.fire('Eliminada', 'La tarea ha sido eliminada.', 'success');
                         const updatedTasks = selectedProject.tasks.filter((task) => task.id !== taskId);
-                        setSelectedProject({
-                            ...selectedProject,
-                            tasks: updatedTasks,
-                        });
+                        setSelectedProject({ ...selectedProject, tasks: updatedTasks });
                     },
                 });
             }
         });
     };
-
     const assignTaskToUser = (taskId: number, userId: number) => {
         router.put(
             `/tareas/${taskId}/asignar`,
-            { user_id: userId }, // ✅ importante: usa `user_id` como en el controlador
+            { user_id: userId },
             {
+                preserveScroll: true,
                 onSuccess: () => {
-                    Swal.fire('Asignada', 'La tarea fue asignada correctamente.', 'success');
+                    Swal.fire({
+                        title: '¡Asignado!',
+                        text: 'La tarea fue asignada correctamente.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
 
                     if (selectedProject) {
                         const updatedTasks = selectedProject.tasks.map((task) =>
-                            task.id === taskId
-                                ? { ...task, assigned_to: userId, status: 'En Progreso' } // ✅ actualiza estado localmente
-                                : task,
+                            task.id === taskId ? { ...task, assigned_to: userId, status: 'En Progreso' } : task,
                         );
+                        setSelectedProject({
+                            ...selectedProject,
+                            tasks: updatedTasks,
+                        });
+                    }
+                },
+            },
+        );
+    };
 
+    const updateTaskStatus = (taskId: number, status: string) => {
+        router.put(
+            `/tareas/${taskId}/estado`,
+            { status },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    Swal.fire({
+                        title: '¡Actualizado!',
+                        text: 'El estado de la tarea fue actualizado correctamente.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                    });
+
+                    if (selectedProject) {
+                        const updatedTasks = selectedProject.tasks.map((task) => (task.id === taskId ? { ...task, status } : task));
                         setSelectedProject({
                             ...selectedProject,
                             tasks: updatedTasks,
@@ -129,22 +155,13 @@ export default function VerProjectsAndTask() {
 
     const getSortedTasks = () => {
         if (!selectedProject) return [];
-
         const tasks = [...selectedProject.tasks];
-
-        if (sortBy === 'recientes') {
-            return tasks.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
-        }
-
-        if (sortBy === 'antiguas') {
-            return tasks.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
-        }
-
+        if (sortBy === 'recientes') return tasks.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+        if (sortBy === 'antiguas') return tasks.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
         if (sortBy === 'prioridad') {
             const prioridadOrden = { Alta: 1, Media: 2, Baja: 3 };
             return tasks.sort((a, b) => prioridadOrden[a.priority] - prioridadOrden[b.priority]);
         }
-
         return tasks;
     };
 
@@ -209,20 +226,34 @@ export default function VerProjectsAndTask() {
                                             <p className="text-sm text-gray-400">Prioridad: {task.priority}</p>
 
                                             {auth.user.rol === 'admin' && (
-                                                <div className="pt-2">
-                                                    <label className="mb-1 block text-sm font-medium">Asignar a empleado:</label>
-                                                    <select
-                                                        value={task.assigned_to ?? ''}
-                                                        onChange={(e) => assignTaskToUser(task.id, parseInt(e.target.value))}
-                                                        className="w-full rounded border px-3 py-1 dark:bg-gray-800 dark:text-white"
-                                                    >
-                                                        <option value="">Seleccionar empleado</option>
-                                                        {users.map((user) => (
-                                                            <option key={user.id} value={user.id}>
-                                                                {user.name}
-                                                            </option>
-                                                        ))}
-                                                    </select>
+                                                <div className="space-y-2 pt-2">
+                                                    <div>
+                                                        <label className="mb-1 block text-sm font-medium">Asignar a empleado:</label>
+                                                        <select
+                                                            value={task.assigned_to ?? ''}
+                                                            onChange={(e) => assignTaskToUser(task.id, parseInt(e.target.value))}
+                                                            className="w-full rounded border px-3 py-1 dark:bg-gray-800 dark:text-white"
+                                                        >
+                                                            <option value="">Seleccionar empleado</option>
+                                                            {users.map((user) => (
+                                                                <option key={user.id} value={user.id}>
+                                                                    {user.name}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label className="mb-1 block text-sm font-medium">Cambiar estado:</label>
+                                                        <select
+                                                            value={task.status}
+                                                            onChange={(e) => updateTaskStatus(task.id, e.target.value)}
+                                                            className="w-full rounded border px-3 py-1 dark:bg-gray-800 dark:text-white"
+                                                        >
+                                                            <option value="Pendiente">Pendiente</option>
+                                                            <option value="En Progreso">En Progreso</option>
+                                                            <option value="Completado">Completado</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             )}
                                         </div>

@@ -78,10 +78,23 @@ public function asignar(Request $request, Task $task)
 
     $task->update([
         'assigned_to' => $request->user_id,
-        'status' => 'En Progreso', // ✅ actualizamos el estado
+        'status' => 'En Progreso', // ✅
     ]);
 
     return response()->json(['message' => 'Tarea asignada correctamente.']);
+}
+
+public function cambiarEstado(Request $request, $id)
+{
+    $request->validate([
+        'status' => 'required|in:Pendiente,En Progreso,Completado',
+    ]);
+
+    $task = Task::findOrFail($id);
+    $task->status = $request->status;
+    $task->save();
+
+    return response()->json(['message' => 'Estado actualizado correctamente.']);
 }
 
 }
