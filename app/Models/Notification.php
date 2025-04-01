@@ -10,16 +10,18 @@ class Notification extends Model
 {
     use HasFactory;
 
+    protected $table = 'Notifications';
+    protected $primaryKey = 'Id';
+    public $timestamps = false;
+
     protected $fillable = [
         'UserId',
         'Message',
-        'ReadAt',
+        'IsRead',
         'CreatedAt',
         'UpdatedAt',
     ];
-
-    public $timestamps = false; // manejamos las fechas manualmente
-
+    
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'UserId');

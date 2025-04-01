@@ -98,7 +98,7 @@
         <a href="{{ route('empleado.comentarios') }}">Ver Comentarios</a>
         </div>
         @php
-    $tieneSinLeer = \App\Models\Notification::where('UserId', 1)->whereNull('ReadAt')->exists();
+    $tieneSinLeer = \App\Models\Notification::where('UserId', auth()->id())->where('IsRead', 0)->exists();
 @endphp
 
 <div class="card">

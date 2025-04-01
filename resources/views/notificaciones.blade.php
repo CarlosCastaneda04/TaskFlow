@@ -90,17 +90,17 @@
             }
 
             data.forEach(notif => {
-                const notifId = notif.id || notif.Id || notif.ID; // Asegurar ID
+                const notifId = notif.id || notif.Id || notif.ID;
 
                 const div = document.createElement('div');
                 div.classList.add('notification');
-                if (!notif.ReadAt) div.classList.add('unread');
+                if (!notif.IsRead) div.classList.add('unread'); // ✅ cambia ReadAt por IsRead
 
                 div.innerHTML = `
                     <strong>${notif.Message}</strong>
                     <div class="fecha">🕓 ${new Date(notif.CreatedAt).toLocaleString()}</div>
                     ${
-                        !notif.ReadAt
+                        !notif.IsRead
                         ? `<button class="btn-leer" onclick="marcarLeida(${notifId}, this)">✅ Marcar como leída</button>`
                         : `<div class="leida-ok">✔️ Ya leída</div>`
                     }
@@ -145,6 +145,7 @@
         });
     }
 </script>
+
 
 
 </body>

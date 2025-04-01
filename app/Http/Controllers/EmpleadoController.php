@@ -131,8 +131,8 @@ public function comentar(Request $request)
 public function marcarComoLeida($id)
 {
     $notificacion = Notification::findOrFail($id);
-    $notificacion->ReadAt = now(); // guarda la fecha actual
-    $notificacion->UpdatedAt = now(); // actualiza también el campo UpdatedAt manualmente
+    $notificacion->IsRead = 1;
+    $notificacion->UpdatedAt = now();
     $notificacion->save();
 
     return response()->json(['message' => 'Notificación marcada como leída']);
