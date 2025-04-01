@@ -14,7 +14,7 @@ use App\Models\Task;
 
 use App\Http\Controllers\ReporteProyectoController;
 
-
+use App\Http\Controllers\GraficosController;
 
 
 
@@ -168,7 +168,7 @@ Route::middleware(['auth'])->group(function (){
         return Inertia::render('dashboard');
     })->name('dashboard');
 });
-
+Route::get('/admin/graficas', [GraficosController::class, 'index'])->name('admin.graficas');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
