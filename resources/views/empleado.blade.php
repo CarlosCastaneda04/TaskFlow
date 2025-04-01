@@ -101,12 +101,15 @@
     $tieneSinLeer = \App\Models\Notification::where('UserId', auth()->id())->where('IsRead', 0)->exists();
 @endphp
 
+
+
 <div class="card">
     <div class="card-icon">
         🔔
         @if ($tieneSinLeer)
-            <span style="color: #ff0055; font-size: 1.2em;">●</span>
-        @endif
+    <span style="color: #ff0055; font-size: 1.5em; vertical-align: middle;">●</span>
+@endif
+
     </div>
     <div class="card-title">Notificaciones</div>
     <a href="{{ route('empleado.notificaciones') }}">Ver Notificaciones</a>
