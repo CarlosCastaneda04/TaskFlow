@@ -19,20 +19,24 @@ class Task extends Model
         'status',
         'priority',
         'deadline',
+        'created_at',
+        'updated_at',
     ];
 
-    // 👇 Relaciones
-
+    // Relación con el proyecto
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id', 'Id'); 
     }
-
+    
+    
+    // Relación con el usuario asignado
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to');
     }
 
+    // Relación con los comentarios
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);

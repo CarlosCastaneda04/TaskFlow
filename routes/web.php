@@ -2,37 +2,32 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\TaskController;
-
-Route::prefix('/')->group(function () {
-    Route::get('/projects', [ProjectController::class, 'index'])->name('admin.projects.index');
-    Route::get('/projects/{project}', [TaskController::class, 'showByProject'])->name('admin.projects.tasks');
-});
-
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-// routes/web.php
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
-// Agrega esto ANTES del grupo de middleware 'auth'
-Route::middleware('guest')->group(function () {
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-});
-
-/*Route::middleware(['auth', 'verified'])->group(function () */
-
-Route::middleware(['auth'])->group(function (){
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/empleado', function () {
+    return view('empleado');
+})->name('empleado');
+
+Route::get('/empleado/tareas', function () {
+    return view('mis_tareas');
+})->name('empleado.tareas');
+
+Route::get('/empleado/comentarios', function () {
+    return view('comentarios');
+})->name('empleado.comentarios');
+
+Route::get('/empleado/notificaciones', function () {
+    return view('notificaciones');
+})->name('empleado.notificaciones');
 
 
 require __DIR__.'/settings.php';

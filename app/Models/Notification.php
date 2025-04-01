@@ -10,15 +10,31 @@ class Notification extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        'message',
-        'read_at',
-    ];
+    protected $table = 'Notifications';
+    protected $primaryKey = 'Id';
+    public $timestamps = false;
 
+    protected $fillable = [
+        'UserId',
+        'Message',
+        'IsRead',
+        'CreatedAt',
+        'UpdatedAt',
+    ];
+    
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'UserId');
+    }
+
+    // Este método asegura que UpdatedAt se actualice al guardar
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->UpdatedAt = now();
+        });
     }
 }
 
