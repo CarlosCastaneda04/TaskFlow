@@ -30,17 +30,33 @@ class EmpleadoController extends Controller
     // Actualizar el estado de una tarea
     public function actualizarEstado(Request $request, $id)
     {
-        $request->validate([
-            'status' => 'required|in:Pendiente,En Progreso,Completado',
-        ]);
-
-        $task = Task::findOrFail($id);
-        $task->status = $request->status;
-        $task->save();
-
-        return response()->json(['message' => 'Estado actualizado', 'task' => $task]);
+        try {
+            // Solo para debug: veamos qué llega
+            \Log::info("Intentando actualizar tarea", [
+                'id_recibido' => $id,
+                'status_recibido' => $request->status
+            ]);
+    
+            $request->validate([
+                'status' => 'required|in:Pendiente,En Progreso,Completado',
+            ]);
+    
+            $task = Task::findOrFail($id);
+            $task->status = $request->status;
+            $task->save();
+    
+            return response()->json([
+                'message' => 'Estado actualizado',
+                'task' => $task
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error al actualizar estado',
+                'mensaje' => $e->getMessage()
+            ], 500);
+        }
     }
-
+    
     // Comentar una tarea
     public function comentar(Request $request)
     {

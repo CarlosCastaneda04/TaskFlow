@@ -57,18 +57,18 @@
                     taskDiv.classList.add('task');
                     taskDiv.innerHTML = `
                         <strong>${task.Title}</strong><br>
-                        Estado: ${task.Status}<br>
+                        Estado: ${task.status}<br>
                         Prioridad: ${task.Priority}<br>
                         Fecha límite: ${task.Deadline}<br>
-                        Proyecto: ${task.Project?.Name ?? 'No asignado'}<br><br>
+                        Proyecto: ${task.project?.Name ?? 'No asignado'}<br><br>
 
                         <textarea id="comentario-${task.Id}" rows="2" cols="40" placeholder="Escribe un comentario..."></textarea><br>
                         <button onclick="enviarComentario(${task.Id})">Agregar Comentario</button><br><br>
 
                         <select id="estado-${task.Id}">
-                            <option value="Pendiente" ${task.Status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-                            <option value="En Progreso" ${task.Status === 'En Progreso' ? 'selected' : ''}>En Progreso</option>
-                            <option value="Completado" ${task.Status === 'Completado' ? 'selected' : ''}>Completado</option>
+                            <option value="Pendiente" ${task.status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="En Progreso" ${task.status === 'En Progreso' ? 'selected' : ''}>En Progreso</option>
+                            <option value="Completado" ${task.status === 'Completado' ? 'selected' : ''}>Completado</option>
                         </select>
                         <button onclick="actualizarEstado(${task.Id})">Actualizar Estado</button>
                     `;
@@ -111,27 +111,36 @@
     }
 
     function actualizarEstado(taskId) {
-        const nuevoEstado = document.getElementById(`estado-${taskId}`).value;
+    const nuevoEstado = document.getElementById(`estado-${taskId}`).value;
 
-        fetch(`/api/empleado/tareas/${taskId}/estado`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                status: nuevoEstado
-            })
+    fetch(`/api/empleado/tareas/${taskId}/estado`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            status: nuevoEstado
         })
-        .then(res => res.json())
-        .then(data => {
-            alert("✅ Estado actualizado");
-            location.reload(); // refrescar para ver los cambios
-        })
-        .catch(err => {
-            alert("❌ Error al actualizar estado");
-            console.error(err);
-        });
-    }
+    })
+    .then(res => {
+        console.log("Response status:", res.status);
+        return res.json();
+    })
+    .then(data => {
+        console.log("Response data:", data);
+        alert("✅ Estado actualizado");
+        location.reload(); // refrescar para ver los cambios
+    })
+    .catch(async err => {
+    const errorText = await err?.response?.text?.() || err?.message || "Error desconocido";
+    alert("❌ Error: " + errorText);
+    console.error(errorText);
+});
+
+}
+
+
 </script>
 
 </body>

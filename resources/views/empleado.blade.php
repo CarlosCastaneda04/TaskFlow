@@ -83,7 +83,7 @@
 </head>
 <body>
 
-<h1>👨‍🎼 Panel del Empleado - TaskFlow</h1>
+<h1>👨 Panel del Empleado - TaskFlow</h1>
 <div class="subtitle">Gestiona tus tareas, comentarios y notificaciones fácilmente</div>
 
 <div class="container">
