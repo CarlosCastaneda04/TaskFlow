@@ -43,6 +43,31 @@
             border-radius: 5px;
         }
 
+        .notification button {
+    background-color: #00dfc4;
+    color: #000;
+    border: none;
+    padding: 8px 18px;
+    margin-top: 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95em;
+    box-shadow: 0 0 8px #00dfc4;
+    transition: all 0.3s ease;
+}
+
+.notification button:hover {
+    background-color: #00bfa6;
+    box-shadow: 0 0 12px #00dfc4, 0 0 20px #00dfc4;
+    transform: scale(1.03);
+}
+
+.notification button:active {
+    transform: scale(0.97);
+}
+
+
     </style>
 </head>
 <body>
@@ -51,7 +76,7 @@
     <div id="notifications-container">Cargando notificaciones...</div>
 
     <script>
-    const userId = 1; // Reemplazá por el ID real si tenés login dinámico
+    const userId = 1; // Cambiar dinámicamente si tienes login real
 
     fetch(`/api/empleado/notificaciones/${userId}`)
         .then(response => response.json())
@@ -65,6 +90,8 @@
             }
 
             data.forEach(notif => {
+                const notifId = notif.id || notif.Id || notif.ID; // Asegurar ID
+
                 const div = document.createElement('div');
                 div.classList.add('notification');
                 if (!notif.ReadAt) div.classList.add('unread');
@@ -74,8 +101,8 @@
                     <div class="fecha">🕓 ${new Date(notif.CreatedAt).toLocaleString()}</div>
                     ${
                         !notif.ReadAt
-                            ? `<button onclick="marcarLeida(${notif.id}, this)">✅ Marcar como leída</button>`
-                            : `<div style="color: #00dfc4; font-size: 0.9em;">✔️ Ya leída</div>`
+                        ? `<button class="btn-leer" onclick="marcarLeida(${notifId}, this)">✅ Marcar como leída</button>`
+                        : `<div class="leida-ok">✔️ Ya leída</div>`
                     }
                 `;
 
@@ -88,15 +115,29 @@
         });
 
     function marcarLeida(notificacionId, button) {
+        if (!notificacionId) {
+            alert("❌ ID de notificación no válido.");
+            return;
+        }
+
         fetch(`/api/empleado/notificaciones/${notificacionId}/leida`, {
             method: 'PATCH'
         })
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Error al marcar");
+            return res.json();
+        })
         .then(data => {
             console.log("✅ Notificación marcada como leída");
-            // Actualizamos el botón y estilo
-            button.parentElement.classList.remove('unread');
-            button.outerHTML = `<div style="color: #00dfc4; font-size: 0.9em;">✔️ Ya leída</div>`;
+
+            const div = button.parentElement;
+            div.classList.remove('unread');
+            button.remove();
+
+            const confirmacion = document.createElement('div');
+            confirmacion.className = 'leida-ok';
+            confirmacion.innerText = '✔️ Ya leída';
+            div.appendChild(confirmacion);
         })
         .catch(err => {
             alert("❌ Error al marcar como leída");
@@ -104,6 +145,7 @@
         });
     }
 </script>
+
 
 </body>
 </html>

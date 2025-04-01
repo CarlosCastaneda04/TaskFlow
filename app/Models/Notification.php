@@ -18,12 +18,21 @@ class Notification extends Model
         'UpdatedAt',
     ];
 
-    public $timestamps = false; // porque tus campos ya se manejan manualmente
+    public $timestamps = false; // manejamos las fechas manualmente
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'UserId');
     }
-}
 
+    // Este método asegura que UpdatedAt se actualice al guardar
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->UpdatedAt = now();
+        });
+    }
+}
 
