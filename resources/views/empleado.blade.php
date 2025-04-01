@@ -95,8 +95,8 @@
     <div class="card">
         <div class="card-icon">💬</div>
         <div class="card-title">Comentarios</div>
-        <a href="/api/comments" target="_blank">Ver Comentarios</a>
-    </div>
+        <a href="{{ route('empleado.comentarios') }}">Ver Comentarios</a>
+        </div>
     <div class="card">
         <div class="card-icon">🔔</div>
         <div class="card-title">Notificaciones</div>

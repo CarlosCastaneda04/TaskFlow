@@ -21,6 +21,9 @@ Route::get('/empleado/tareas', function () {
     return view('mis_tareas');
 })->name('empleado.tareas');
 
+Route::get('/empleado/comentarios', function () {
+    return view('comentarios');
+})->name('empleado.comentarios');
 
 
 require __DIR__.'/settings.php';

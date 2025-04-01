@@ -39,35 +39,100 @@
     <div id="tasks-container">Cargando tareas...</div>
 
     <script>
-        fetch('/api/empleado/tareas/1')
-            .then(response => {
-                if (!response.ok) throw new Error("Error al cargar tareas");
-                return response.json();
+    const userId = 1; // por ahora estático
+
+    fetch(`/api/empleado/tareas/${userId}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Error al cargar tareas");
+            return response.json();
+        })
+        .then(data => {
+            const container = document.getElementById('tasks-container');
+            container.innerHTML = '';
+            if (data.length === 0) {
+                container.innerHTML = 'No hay tareas asignadas.';
+            } else {
+                data.forEach(task => {
+                    const taskDiv = document.createElement('div');
+                    taskDiv.classList.add('task');
+                    taskDiv.innerHTML = `
+                        <strong>${task.Title}</strong><br>
+                        Estado: ${task.Status}<br>
+                        Prioridad: ${task.Priority}<br>
+                        Fecha límite: ${task.Deadline}<br>
+                        Proyecto: ${task.Project?.Name ?? 'No asignado'}<br><br>
+
+                        <textarea id="comentario-${task.Id}" rows="2" cols="40" placeholder="Escribe un comentario..."></textarea><br>
+                        <button onclick="enviarComentario(${task.Id})">Agregar Comentario</button><br><br>
+
+                        <select id="estado-${task.Id}">
+                            <option value="Pendiente" ${task.Status === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
+                            <option value="En Progreso" ${task.Status === 'En Progreso' ? 'selected' : ''}>En Progreso</option>
+                            <option value="Completado" ${task.Status === 'Completado' ? 'selected' : ''}>Completado</option>
+                        </select>
+                        <button onclick="actualizarEstado(${task.Id})">Actualizar Estado</button>
+                    `;
+                    container.appendChild(taskDiv);
+                });
+            }
+        })
+        .catch(error => {
+            document.getElementById('tasks-container').innerHTML = "Error al cargar tareas.";
+            console.error(error);
+        });
+
+    function enviarComentario(taskId) {
+        const contenido = document.getElementById(`comentario-${taskId}`).value;
+        if (contenido.trim() === "") {
+            alert("El comentario no puede estar vacío");
+            return;
+        }
+
+        fetch('/api/empleado/comentarios', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                task_id: taskId,
+                user_id: userId,
+                content: contenido
             })
-            .then(data => {
-                const container = document.getElementById('tasks-container');
-                container.innerHTML = '';
-                if (data.length === 0) {
-                    container.innerHTML = 'No hay tareas asignadas.';
-                } else {
-                    data.forEach(task => {
-                        const taskDiv = document.createElement('div');
-                        taskDiv.classList.add('task');
-                        taskDiv.innerHTML = `
-                          <strong>${task.Title}</strong><br>
-                          Estado: ${task.Status}<br>
-                         Prioridad: ${task.Priority}<br>
-                          Fecha límite: ${task.Deadline}<br>
-                             Proyecto: ${task.project?.Name ?? 'No asignado'}
-                                `;
-                        container.appendChild(taskDiv);
-                    });
-                }
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("✅ Comentario agregado");
+            document.getElementById(`comentario-${taskId}`).value = '';
+        })
+        .catch(err => {
+            alert("❌ Error al enviar comentario");
+            console.error(err);
+        });
+    }
+
+    function actualizarEstado(taskId) {
+        const nuevoEstado = document.getElementById(`estado-${taskId}`).value;
+
+        fetch(`/api/empleado/tareas/${taskId}/estado`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                status: nuevoEstado
             })
-            .catch(error => {
-                document.getElementById('tasks-container').innerHTML = "Error al cargar tareas.";
-                console.error(error);
-            });
-    </script>
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("✅ Estado actualizado");
+            location.reload(); // refrescar para ver los cambios
+        })
+        .catch(err => {
+            alert("❌ Error al actualizar estado");
+            console.error(err);
+        });
+    }
+</script>
+
 </body>
 </html>
