@@ -57,4 +57,15 @@ class TaskController extends Controller
         $task->delete();
         return response()->json(null, 204);
     }
+
+    // Obtener todas las tareas de un proyecto específico
+    public function showByProject($projectId)
+    {
+        $tasks = Task::with(['project', 'user', 'comments'])
+                 ->where('project_id', $projectId)
+                 ->get();
+
+        return view('admin.detalletask', compact('tasks'));
+    }
+
 }

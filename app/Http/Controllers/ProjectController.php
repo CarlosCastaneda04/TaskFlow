@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 class ProjectController extends Controller
 {
     // Mostrar todos los proyectos
-    public function index()
-    {
-        return Project::all();
-    }
+     public function index()
+{
+    $projects = Project::all();
+    return view('admin.homeadmin', compact('projects'));
+}
 
     // Crear un nuevo proyecto
     public function store(Request $request)
@@ -55,4 +56,7 @@ class ProjectController extends Controller
         $project->delete();
         return response()->json(null, 204);
     }
+
+
+
 }

@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
+
+Route::prefix('/')->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index'])->name('admin.projects.index');
+    Route::get('/projects/{project}', [TaskController::class, 'showByProject'])->name('admin.projects.tasks');
+});
+
 
 Route::get('/', function () {
     return view('home');
