@@ -11,17 +11,18 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'message',
-        'read_at',
-        'created_at',
-        'updated_at',
+        'UserId',
+        'Message',
+        'ReadAt',
+        'CreatedAt',
+        'UpdatedAt',
     ];
 
-    // Relación: cada notificación pertenece a un usuario
+    public $timestamps = false; // porque tus campos ya se manejan manualmente
+
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'UserId');
     }
 }
 

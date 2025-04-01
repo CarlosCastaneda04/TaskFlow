@@ -57,24 +57,40 @@ class EmpleadoController extends Controller
         }
     }
     
-    // Comentar una tarea
-    public function comentar(Request $request)
-    {
-        $request->validate([
-            'task_id' => 'required|exists:tasks,id',
-            'user_id' => 'required|exists:users,id',
-            'content' => 'required|string',
-        ]);
+// Comentar una tarea
+public function comentar(Request $request)
+{
+    $request->validate([
+        'task_id' => 'required|exists:tasks,id',
+        'user_id' => 'required|exists:users,id',
+        'content' => 'required|string',
+    ]);
 
-        $comment = Comment::create($request->all());
-        return response()->json(['message' => 'Comentario agregado', 'comment' => $comment]);
-    }
+    // Crear el comentario
+    $comment = Comment::create($request->all());
+
+    // Obtener la tarea asociada
+    $task = Task::find($request->task_id);
+
+    // Crear notificación para el usuario asignado a la tarea
+    Notification::create([
+        'UserId' => $task->assigned_to,
+        'Message' => "💬 Nuevo comentario en la tarea '{$task->title}'",
+        'CreatedAt' => now()
+    ]);
+
+    return response()->json(['message' => 'Comentario agregado', 'comment' => $comment]);
+}
+
 
     // Ver notificaciones personales
     public function misNotificaciones($userId)
     {
-        return Notification::where('user_id', $userId)->get();
+        return Notification::where('UserId', $userId)
+            ->orderBy('CreatedAt', 'desc')
+            ->get();
     }
+    
 
     // Filtrar tareas por estado o prioridad
     public function filtrarTareas(Request $request, $userId)
@@ -91,4 +107,25 @@ class EmpleadoController extends Controller
 
         return $query->get();
     }
+
+    public function crearNotificacion(Request $request)
+{
+    $request->validate([
+        'UserId' => 'required|exists:users,id',
+        'Message' => 'required|string',
+        'CreatedAt' => 'nullable|date',
+    ]);
+
+    $notificacion = Notification::create([
+        'UserId' => $request->UserId,
+        'Message' => $request->Message,
+        'CreatedAt' => $request->CreatedAt ?? now(),
+    ]);
+
+    return response()->json([
+        'message' => 'Notificación creada correctamente',
+        'notificacion' => $notificacion
+    ]);
+}
+
 }

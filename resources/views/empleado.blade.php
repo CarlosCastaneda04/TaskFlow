@@ -100,15 +100,8 @@
     <div class="card">
         <div class="card-icon">🔔</div>
         <div class="card-title">Notificaciones</div>
-        <a href="/api/notifications" target="_blank">Ver Notificaciones</a>
+        <a href="{{ route('empleado.notificaciones') }}">Ver Notificaciones</a>
     </div>
 </div>
-
-    <div class="note">
-        Usa Postman para crear o actualizar comentarios sobre tus tareas asignadas.
-        <br>
-        Solo se mostrarán tareas relacionadas con el empleado autenticado (esto se implementa con filtrado).
-    </div>
-
 </body>
 </html>

@@ -25,6 +25,10 @@ Route::get('/empleado/comentarios', function () {
     return view('comentarios');
 })->name('empleado.comentarios');
 
+Route::get('/empleado/notificaciones', function () {
+    return view('notificaciones');
+})->name('empleado.notificaciones');
+
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
