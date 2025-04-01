@@ -9,6 +9,10 @@ use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\TaskController;
+use Illuminate\Http\Request;
+use App\Models\Task;
+
+
 
 
 
@@ -71,6 +75,63 @@ Route::get('/ver-proyectos-tareas', function () {
         'projects' => $projects
     ]);
 })->middleware('auth');
+
+
+Route::get('/proyectos/{project}/editar', function (Project $project) {
+    if ($project->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    return Inertia::render('EditarProyecto', [
+        'project' => $project
+    ]);
+})->middleware('auth');
+
+
+Route::put('/proyectos/{project}', function (Request $request, Project $project) {
+    if ($project->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'fecha_cierre' => 'nullable|date',
+    ]);
+
+    $project->update($validated);
+
+    return redirect()->route('dashboard')->with('success', 'Proyecto actualizado');
+})->middleware('auth');
+
+
+
+
+Route::delete('/proyectos/{project}', function (Project $project) {
+    if ($project->user_id !== Auth::id()) {
+        abort(403);
+    }
+
+    $project->delete();
+
+    return redirect()->route('dashboard')->with('success', 'Proyecto eliminado correctamente');
+})->middleware('auth');
+
+
+
+Route::delete('/tareas/{task}', function (Task $task) {
+    $task->delete();
+    return response()->json(['message' => 'Tarea eliminada']);
+})->middleware('auth');
+
+
+Route::get('/tareas/{task}/editar', function (Task $task) {
+    return Inertia::render('EditarTarea', [
+        'task' => $task
+    ]);
+})->middleware('auth');
+
+Route::put('/tareas/{task}', [\App\Http\Controllers\TaskController::class, 'update'])->middleware('auth');
 
 
 /*Route::middleware(['auth', 'verified'])->group(function () */

@@ -49,13 +49,13 @@ class TaskController extends Controller
         ]);
 
         $task->update($request->all());
-        return response()->json($task);
+        return redirect()->route('dashboard')->with('success', 'Tarea actualizada correctamente.');
     }
 
     // Eliminar una tarea
     public function destroy(Task $task)
     {
         $task->delete();
-        return response()->json(null, 204);
+        return back()->with('success', 'Tarea eliminada correctamente.');
     }
 }
