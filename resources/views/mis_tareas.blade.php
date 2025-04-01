@@ -58,7 +58,7 @@
                           Estado: ${task.Status}<br>
                          Prioridad: ${task.Priority}<br>
                           Fecha límite: ${task.Deadline}<br>
-                             Proyecto: ${task.Project?.Name ?? 'No asignado'}
+                             Proyecto: ${task.project?.Name ?? 'No asignado'}
                                 `;
                         container.appendChild(taskDiv);
                     });

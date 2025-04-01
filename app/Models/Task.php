@@ -26,9 +26,10 @@ class Task extends Model
     // Relación con el proyecto
     public function project(): BelongsTo
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class, 'project_id', 'Id'); 
     }
-
+    
+    
     // Relación con el usuario asignado
     public function user(): BelongsTo
     {
