@@ -86,10 +86,6 @@ export default function Dashboard() {
                                 <Link href="/admin/graficas">
                                     <Button variant="outline">Ver Gráficas</Button>
                                 </Link>
-
-                                <Link href="/admin/reportes">
-                                    <Button variant="outline">Ver Reportes</Button>
-                                </Link>
                             </>
                         )}
                     </div>
