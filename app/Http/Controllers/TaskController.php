@@ -58,4 +58,30 @@ class TaskController extends Controller
         $task->delete();
         return back()->with('success', 'Tarea eliminada correctamente.');
     }
+    public function assign(Request $request, Task $task)
+{
+    $request->validate([
+        'assigned_to' => 'required|exists:users,id',
+    ]);
+
+    $task->assigned_to = $request->assigned_to;
+    $task->save();
+
+    return response()->json(['message' => 'Tarea asignada correctamente']);
+}
+
+public function asignar(Request $request, Task $task)
+{
+    $request->validate([
+        'user_id' => 'required|exists:users,id',
+    ]);
+
+    $task->update([
+        'assigned_to' => $request->user_id,
+        'status' => 'En Progreso', // ✅ actualizamos el estado
+    ]);
+
+    return response()->json(['message' => 'Tarea asignada correctamente.']);
+}
+
 }

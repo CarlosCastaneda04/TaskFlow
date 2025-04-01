@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
-
+use App\Models\User;
+use Inertia\Inertia; 
 use Illuminate\Support\Facades\Auth;
 
 
@@ -66,4 +67,21 @@ class ProjectController extends Controller
         $project->delete();
         return response()->json(null, 204);
     }
+
+ 
+
+
+public function verProyectosYTareas()
+{
+    $user = Auth::user();
+
+    $projects = Project::with('tasks')->get(); // Todos los proyectos con tareas
+    $users = User::where('rol', 'trabajador')->get(); // Para asignar tareas
+
+    return Inertia::render('admin/VerProjectsAndTask', [
+        'auth' => ['user' => $user],
+        'projects' => $projects,
+        'users' => $user->rol === 'admin' ? $users : [],
+    ]);
+}
 }

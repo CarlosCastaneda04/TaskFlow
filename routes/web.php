@@ -159,8 +159,8 @@ Route::get('/reportes/excel', [ReporteProyectoController::class, 'exportExcel'])
     Route::get('/reportes/pdf', [ReporteProyectoController::class, 'exportPdf'])->middleware('auth')->name('reportes.pdf');
     Route::get('/reportes/excel', [ReporteProyectoController::class, 'exportExcel'])->middleware('auth')->name('reportes.excel');
 
-
-
+Route::put('/tareas/{task}/asignar', [TaskController::class, 'asignar'])->name('tareas.asignar');
+Route::get('/admin/ver-proyectos-tareas', [ProjectController::class, 'verProyectosYTareas'])->name('admin.verProyectosYTareas');
 /*Route::middleware(['auth', 'verified'])->group(function () */
 
 Route::middleware(['auth'])->group(function (){
