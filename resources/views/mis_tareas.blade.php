@@ -4,34 +4,76 @@
     <meta charset="UTF-8">
     <title>Mis Tareas Asignadas</title>
     <style>
-        body {
-            background-color: #121212;
-            color: #00dfc4;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .task {
-            border: 1px solid #00dfc4;
-            margin: 10px auto;
-            padding: 15px;
-            width: 80%;
-            background-color: #1e1e1e;
-            border-radius: 10px;
-        }
-        .back-button {
-            background-color: #00dfc4;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            margin-bottom: 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-    </style>
+    body {
+        background-color: #121212;
+        color: #00dfc4;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        text-align: center;
+    }
+
+    h1 {
+        margin-bottom: 20px;
+    }
+
+    .task {
+        border: 1px solid #00dfc4;
+        margin: 10px auto;
+        padding: 20px;
+        width: 80%;
+        background-color: #1e1e1e;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 223, 196, 0.2);
+    }
+
+    textarea {
+        width: 80%;
+        max-width: 500px;
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid #00dfc4;
+        background-color: #2a2a2a;
+        color: #fff;
+        resize: none;
+        font-size: 14px;
+        outline: none;
+        margin-bottom: 10px;
+    }
+
+    .back-button, button {
+        background-color: #00dfc4;
+        color: #000;
+        border: none;
+        padding: 10px 20px;
+        margin: 8px 5px;
+        cursor: pointer;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .back-button:hover,
+    button:hover {
+        background-color: #00bcae;
+        transform: scale(1.05);
+    }
+
+    select {
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: 1px solid #00dfc4;
+        background-color: #2a2a2a;
+        color: #fff;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: #00bcae;
+    }
+</style>
 </head>
 <body>
     <button class="back-button" onclick="window.location.href='/empleado'">← Volver al Panel</button>
