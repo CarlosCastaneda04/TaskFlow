@@ -15,6 +15,8 @@ class Project extends Model
         'description',
         'start_date',
         'end_date',
+        'user_id', // ✅ agregar esto
+
     ];
 
     // 👇 Relaciones
@@ -23,4 +25,10 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
 }
