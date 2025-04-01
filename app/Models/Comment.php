@@ -14,13 +14,17 @@ class Comment extends Model
         'task_id',
         'user_id',
         'content',
+        'created_at',
+        'updated_at',
     ];
 
+    // Relación con la tarea
     public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class);
     }
 
+    // Relación con el usuario
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

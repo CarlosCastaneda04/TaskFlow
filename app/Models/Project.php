@@ -10,15 +10,19 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'Id'; 
+
+
     protected $fillable = [
         'name',
         'description',
         'start_date',
         'end_date',
+        'created_at',
+        'updated_at',
     ];
 
-    // 👇 Relaciones
-
+    // Relación: un proyecto tiene muchas tareas
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
